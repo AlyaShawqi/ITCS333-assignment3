@@ -1,0 +1,95 @@
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background-color: #f8f9fa;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: auto;
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        text-align: center;
+        font-size: 2em;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    #studentTable {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    #studentTable th, #studentTable td {
+        padding: 15px 20px; /* Increased padding for wider cells */
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+
+    #studentTable thead {
+        background-color: #007bff;
+        color: #ffffff;
+    }
+
+    #studentTable tbody tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    #studentTable tbody tr:hover {
+        background-color: #dfe6f0;
+    }
+
+    #studentTable th {
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+
+    #studentTable td {
+        font-size: 0.9em;
+        color: #ffffff;
+    }
+
+    #studentTable tbody td.error {
+        color: red;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    /* Set minimum width for each column */
+    #studentTable th:nth-child(1),
+    #studentTable td:nth-child(1) {
+        min-width: 100px; /* Year */
+    }
+
+    #studentTable th:nth-child(2),
+    #studentTable td:nth-child(2) {
+        min-width: 120px; /* Semester */
+    }
+
+    #studentTable th:nth-child(3),
+    #studentTable td:nth-child(3) {
+        min-width: 150px; /* College */
+    }
+
+    #studentTable th:nth-child(4),
+    #studentTable td:nth-child(4) {
+        min-width: 150px; /* Program */
+    }
+
+    #studentTable th:nth-child(5),
+    #studentTable td:nth-child(5) {
+        min-width: 130px; /* Nationality */
+    }
+
+    #studentTable th:nth-child(6),
+    #studentTable td:nth-child(6) {
+        min-width: 180px; /* Number of Students */
+    }
+
