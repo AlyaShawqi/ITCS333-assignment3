@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Data</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Student Table</h1>
+        <table id="studentTable">
+            <thead>
+                <tr>
+                    <th>Year</th>
+                    <th>Semester</th>
+                    <th>College</th>
+                    <th>Program</th>
+                    <th>Nationality</th>
+                    <th>Number of Students</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <!-- Data will be dynamically inserted here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        const API_URL = "https://data.gov.bh/api/explore/v2.1/catalog/datasets/01-statistics-of-students-nationalities_updated/records?where=colleges%20like%20%22IT%22%20AND%20the_programs%20like%20%22bachelor%22&limit=100";
+        const CORS_PROXY = "https://corsproxy.io/?";
+
+        // Fetch student data
+        async function fetchStudentData() {
+            try {
+                // Attempt direct fetch
+                const data = await fetchData(API_URL);
+
+                // If successful, populate table
+                populateTable(data);
+            } catch (error) {
+                console.warn('Direct fetch failed, retrying with CORS proxy:', error.message);
+
+                // Retry with CORS proxy
+                try {
+                    const data = await fetchData(CORS_PROXY + encodeURIComponent(API_URL));
+                    populateTable(data);
+                } catch (proxyError) {
+                    console.error('Both direct fetch and proxy fetch failed:', proxyError.message);
+                    displayError(`Failed to fetch data: ${proxyError.message}`);
+                }
+            }
+        }
+
+        // Fetch data from a URL
+        async function fetchData(url) {
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: { 'Accept': 'application/json' }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const json = await response.json();
+            return json.results || [];
+        }
+
+        // Populate the table with data
+        function populateTable(data) {
+            const tableBody = document.getElementById('tableBody');
+            tableBody.innerHTML = '';
+
+            if (data.length > 0) {
+                data.forEach(record => {
+                    const row = document.createElement('tr');
+                    const cells = [
+                        record.year ?? 'N/A',
+                        record.semester ?? 'N/A',
+                        record.colleges ?? 'N/A',
+                        record.the_programs ?? 'N/A',
+                        record.nationality ?? 'N/A',
+                        record.number_of_students ?? 'N/A'
+                    ];
+
+                    cells.forEach(cellData => {
+                        const cell = document.createElement('td');
+                        cell.textContent = cellData;
+                        row.appendChild(cell);
+                    });
+
+                    tableBody.appendChild(row);
+                });
+            } else {
+                displayError('No data found');
+            }
+        }
+
+        // Display an error in the table
+        function displayError(message) {
+            const tableBody = document.getElementById('tableBody');
+            tableBody.innerHTML = '';
+            const row = document.createElement('tr');
+            const cell = document.createElement('td');
+            cell.colSpan = 6;
+            cell.textContent = message;
+            cell.style.color = 'red';
+            row.appendChild(cell);
+            tableBody.appendChild(row);
+        }
+
+        // Fetch data when the page loads
+        document.addEventListener('DOMContentLoaded', fetchStudentData);
+    </script>
+</body>
+</html>
